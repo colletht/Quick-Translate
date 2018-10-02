@@ -1,0 +1,138 @@
+button{
+    border-radius:50px;
+    border-width:2px;
+    border-color: darkgray;
+    border-style: solid;
+    background-color: transparent;
+    background:transparent;
+    box-sizing: border-box;
+    
+}
+
+#searchBar{
+    position: absolute;
+    height: 30px;
+    width: 400px;
+    top:0px;
+    left: 0px;
+    float: left;
+}
+
+#inlaidBtn{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height:30px;
+    width: 50px;
+}
+
+#outerBtns{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 90px;
+    height: 30px;
+    padding-right: 1px;
+}
+#inputWord{
+    border-radius: 50px;
+    border-width: 0px;
+    background-color: lightgrey;
+    padding: 5px;
+    padding-left: 60px;
+    width:400px;
+    height:30px;
+    box-sizing:border-box;
+    z-index: -1;
+}
+#inputWord:focus{
+    outline: none;
+    border-width: 2px;
+    border-style: solid;
+    border-color: lightgrey;
+    background-color: white;
+}
+
+#inputWord:hover{
+    outline: none;
+    background-color:  rgb(255, 116, 116);
+}
+#search{
+    position: absolute;
+    background-image: url(../images/dictcclogo.png);
+    background-size: 22px;
+    background-position: center;
+    background-repeat: no-repeat;
+    left: 12px;
+    top: 10px;
+    height: 25px;
+    width:40px;
+    box-sizing: border-box;
+    z-index: 1;
+    border-color:transparent;
+    outline: none;
+}
+
+#search:hover{
+    background-color: rgb(255, 116, 116);
+    
+}
+
+#siteSelect{
+    position: absolute;
+    left: -6px;
+    top: 8px;
+    background-image: url(../images/switch.png);
+    background-position: center;
+    background-size: 37px;
+    background-repeat: no-repeat;
+    width: 40px;
+    height: 30px;
+    border-width: 0px;
+    background-color: lightgrey;
+    z-index: 1;
+    outline: none;
+}
+
+#siteSelect:hover{
+    background-color: rgb(255, 116, 116);
+}
+
+#settings{
+    position: absolute;
+    right: 6px;
+    top: 8px;
+    background-image: url(../images/gear.png);
+    background-position: center;
+    background-size: 26px;
+    width: 40px;
+    height: 30px;
+    border-width: 0px;
+    background-repeat: no-repeat;
+    background-color: lightgrey;
+    z-index: 1;
+    outline: none;
+}
+
+#settings:hover{
+    background-color: rgb(255, 116, 116);
+}
+
+#bottom{
+    padding-top:10px;
+    display:none;
+}
+
+.dropdown-content button{
+    background-color: lightgrey;
+    border-color: transparent;
+    outline: none;
+}
+
+#dutch{
+    background-color: rgb(255, 116, 116);
+}
+
+.dropdown-content button:hover{
+    opacity: 0.6;
+}
