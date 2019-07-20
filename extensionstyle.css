@@ -129,10 +129,6 @@ button{
     outline: none;
 }
 
-#dutch{
-    background-color: rgb(255, 116, 116);
-}
-
 .dropdown-content button:hover{
     opacity: 0.6;
 }

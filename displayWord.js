@@ -1,127 +1,118 @@
 
-
+const btnSelectedColor = "rgb(255, 116, 116)";
+const btnDeSelectedColor = "lightgrey";
 
 document.addEventListener('DOMContentLoaded', function(){
-    var itaStr = "Tradurre italiano...";
-    var gerStr = "Ubersetzen Deutsch...";
-    var dutStr = "Vertaal Nederlands...";
-    var rusStr = "Perevesti russkiy...";
-    var spaStr = "Traducir espanol...";
-    var site = "dict";
-    var lang = "Dutch";
-    var searchButton = document.getElementById('search');
-    var swapButton = document.getElementById('siteSelect');
-    var menuButton = document.getElementById('settings');
-    var dutchButton = document.getElementById('dutch');
-    var germanButton = document.getElementById('german');
-    var spanishButton = document.getElementById('spanish');
-    var russianButton = document.getElementById('russian');
-    var italianButton = document.getElementById('italian');
+    console.log("DOMContentLoaded");
+    const languageData = {
+        "dutch" : {
+            prompt : "Vertaal Nederlands...",
+            btn : document.getElementById('dutch')
+        },
+        "german" : {
+            prompt : "Ubersetzen Deutsch...",
+            btn : document.getElementById('german')
 
-    //when search is pressed
-    searchButton.addEventListener('click',function(){
-        var word = document.getElementById("inputWord").value;
-        chrome.runtime.sendMessage({request: word});
-    });
+        },
+        "spanish" : {
+            prompt : "Traducir espanol...",
+            btn : document.getElementById('spanish')
 
-    //when swap key is pressed
-    swapButton.addEventListener('click',function(){
-        if(site === "dict"){
-            site = "bab";
-            document.getElementById("search").style.backgroundImage = "url('images/bablalogo.png')";
-        }else if(site === "bab"){
-            site = "dict";
-            document.getElementById("search").style.backgroundImage = "url('images/dictcclogo.png')";
+        },
+        "russian" : {
+            prompt : "Perevesti russkiy...",
+            btn : document.getElementById('russian')
+
+        },
+        "italian" : {
+            prompt : "tradurre italiano...",
+            btn : document.getElementById('italian')
+
         }
-        chrome.runtime.sendMessage({website: site});
-    });
-    
-    //when settings key pressed
-    menuButton.addEventListener('click',function(){
-        if(document.getElementById("bottom").style.display !== 'inline-block'){
-            document.getElementById("bottom").style.display = 'inline-block';
-        }else{
-            document.getElementById("bottom").style.display = 'none';
-        }
-    });
+    }
 
-    //when dutch key pressed
-    dutchButton.addEventListener('click',function(){
-        if(lang !== "Dutch"){
-            lang = "Dutch";
-            chrome.runtime.sendMessage({language:"Dutch"});
-            dutchButton.style.backgroundColor = "rgb(255, 116, 116)";
-            document.getElementById('inputWord').placeholder = dutStr;
-        }
-        germanButton.style.backgroundColor = "lightgrey";
-        spanishButton.style.backgroundColor = "lightgrey";
-        russianButton.style.backgroundColor = "lightgrey";
-        italianButton.style.backgroundColor = "lightgrey";
-    });
-    
+    const searchBtn = document.getElementById('search');
+    const swapBtn = document.getElementById('siteSelect');
+    const menuBtn = document.getElementById('settings');
 
-    //when german key pressed
-    germanButton.addEventListener('click',function(){
-        if(lang !== "Germ"){
-            lang = "Germ";
-            chrome.runtime.sendMessage({language:"Germ"});
-            germanButton.style.backgroundColor = "rgb(255, 116, 116)";
-            document.getElementById('inputWord').placeholder = gerStr;
-        }
-        dutchButton.style.backgroundColor = "lightgrey";
-        spanishButton.style.backgroundColor = "lightgrey";
-        russianButton.style.backgroundColor = "lightgrey";
-        italianButton.style.backgroundColor = "lightgrey";
-    });
+    browser.storage.sync.get(['website', 'language']).then( res => {
+        console.log("Stored data retrieved")
+        //setting currents from storage if there is anything
+        var curSite = swapToSite(searchBtn, res.website);
+        var curLang = swapToLang(languageData, res.language, null);
 
-    //when spanish key pressed
-    spanishButton.addEventListener('click',function(){
-        if(lang !== "Span"){
-            lang = "Span";
-            chrome.runtime.sendMessage({language:"Span"});
-            spanishButton.style.backgroundColor = "rgb(255, 116, 116)";
-            document.getElementById('inputWord').placeholder = spaStr;
-        }
-        germanButton.style.backgroundColor = "lightgrey";
-        dutchButton.style.backgroundColor = "lightgrey";
-        russianButton.style.backgroundColor = "lightgrey";
-        italianButton.style.backgroundColor = "lightgrey";
-    });
 
-    //when russian key pressed
-    russianButton.addEventListener('click',function(){
-        if(lang !== "Rus"){
-            lang = "Rus";
-            chrome.runtime.sendMessage({language:"Rus"});
-            russianButton.style.backgroundColor = "rgb(255, 116, 116)";
-            document.getElementById('inputWord').placeholder = rusStr;
-        }
-        germanButton.style.backgroundColor = "lightgrey";
-        spanishButton.style.backgroundColor = "lightgrey";
-        dutchButton.style.backgroundColor = "lightgrey";
-        italianButton.style.backgroundColor = "lightgrey";
-    });
-
-    italianButton.addEventListener('click',function(){
-        if(lang !== "Ita"){
-            lang = "Ita";
-            chrome.runtime.sendMessage({language:"Ita"});
-            italianButton.style.backgroundColor = "rgb(255, 116, 116)";
-            document.getElementById('inputWord').placeholder = itaStr;
-        }
-        germanButton.style.backgroundColor = "lightgrey";
-        spanishButton.style.backgroundColor = "lightgrey";
-        dutchButton.style.backgroundColor = "lightgrey";
-        russianButton.style.backgroundColor = "lightgrey";
-    });
-
-    //when enter is pressed
-    document.onkeydown = function(e) {
-        if(e.keyCode == 13){
+        //when search is pressed
+        searchBtn.addEventListener('click',function(){
+            console.log('search')
             var word = document.getElementById("inputWord").value;
-            chrome.runtime.sendMessage({request: word});
-        }
-    };
+            browser.storage.sync.set({
+                request : word
+            });
+        });
     
-
+        //when swap key is pressed
+        swapBtn.addEventListener('click',function(){
+            console.log('swap')
+            curSite = swapToSite(searchBtn, curSite === 'bab' ? 'dict': 'bab');
+        });
+        
+        //when settings key pressed
+        menuBtn.addEventListener('click',function(){
+            console.log('menu')
+            if(document.getElementById("bottom").style.display !== 'inline-block'){
+                document.getElementById("bottom").style.display = 'inline-block';
+            }else{
+                document.getElementById("bottom").style.display = 'none';
+            }
+        });
+    
+        //when a language button is pressed
+        for(var language in languageData){
+            console.log(`Adding listener for ${language} button`)
+            languageData[language].btn.onclick = function(){
+                console.log(this.id);
+                curLang = swapToLang(languageData, this.id, curLang);
+            }
+        };
+    
+        //when enter is pressed
+        document.onkeydown = function(e) {
+            if(e.keyCode == 13){
+                console.log('enter');
+                var word = document.getElementById("inputWord").value;
+                browser.storage.sync.set({request: word});
+            }
+        };
+    }).catch(err => console.log(`Load Settings ERROR: ${err}`));
 });
+
+//helper function to swap to a language
+function swapToLang(languageData, language, curLang){
+    if(language === null) 
+        language = "dutch"; //default to dutch
+    if(curLang !== null)
+        languageData[curLang].btn.style.backgroundColor = btnDeSelectedColor;
+    curLang = language;
+    browser.storage.sync.set({ language : language });
+    languageData[curLang].btn.style.backgroundColor = btnSelectedColor;
+    document.getElementById('inputWord').placeholder = languageData[curLang].prompt;
+    return language;
+}
+
+//helper function to swap to a website
+function swapToSite(btn, curSite){
+    if(curSite === "dict"){
+        btn.style.backgroundImage = "url('images/dictcclogo.png')";
+        curSite = "dict";
+    }else if (curSite === "bab"){
+        btn.style.backgroundImage = "url('images/bablalogo.png')";
+        curSite = "bab";
+    }else{
+        //default to bab
+        btn.style.backgroundImage = "url('images/bablalogo.png')";
+        curSite = "bab";
+    }
+    browser.storage.sync.set({website: curSite});
+    return curSite;
+}

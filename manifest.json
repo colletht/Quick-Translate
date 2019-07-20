@@ -29,11 +29,17 @@
     "commands" : {
         "_execute_browser_action" : {
             "suggested_key" : {
-                "Default" : "Ctrl+Alt+A",
+                "default" : "Ctrl+Alt+A",
                 "windows" : "Ctrl+Alt+A",
                 "mac" : "Ctrl+Alt+A"
             },
             "description" : "Toggle the popup to search for a word"
+        }
+    },
+
+    "browser_specific_settings" : {
+        "gecko" : {
+            "id" : "{09f5e275-a6bb-4669-96e6-feebde5fab9c}"
         }
     }
 
